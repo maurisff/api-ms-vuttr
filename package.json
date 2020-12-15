@@ -1,0 +1,50 @@
+{
+  "name": "api-ms-vuttr",
+  "version": "1.0.0",
+  "description": "VUTTR Application Backend",
+  "main": "/src/server.js",
+  "scripts": {
+    "start": "set NODE_ENV=production && node ./src/server.js",
+    "dev": "nodemon ./src/server.js",
+    "herokuDeploy": "node ./src/server.js",
+    "lint": "eslint ./src --fix "
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/maurisff/api-ms-vuttr.git"
+  },
+  "author": "Mauricio Schueroff <mauricio.sff@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/maurisff/api-ms-vuttr/issues"
+  },
+  "homepage": "https://github.com/maurisff/api-ms-vuttr#readme",
+  "devDependencies": {
+    "eslint": "^7.15.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.22.1",
+    "nodemon": "^2.0.6"
+  },
+  "engines": {
+    "node": "12.14.1",
+    "npm": "6.13.4"
+  },
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "compression": "^1.7.4",
+    "cookie-parser": "^1.4.5",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "filter-files": "^0.4.0",
+    "helmet": "^4.2.0",
+    "is-directory": "^0.3.1",
+    "jsonwebtoken": "^8.5.1",
+    "md5": "^2.3.0",
+    "method-override": "^3.0.0",
+    "moment": "^2.29.1",
+    "moment-timezone": "^0.5.32",
+    "mongoose": "^5.11.8",
+    "morgan": "^1.10.0"
+  }
+}
