@@ -1,12 +1,15 @@
-.DS_Store
 node_modules
-resources
-.vscode/launch.json
+dist
+logs
+coverage
+.settings
+
 
 # local env files
 .env
 .env.local
 .env.*.local
+*.error
 
 # Log files
 npm-debug.log*
@@ -15,6 +18,8 @@ yarn-error.log*
 
 # Editor directories and files
 .idea
+.project
+.classpath
 *.suo
 *.ntvs*
 *.njsproj
