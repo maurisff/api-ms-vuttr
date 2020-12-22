@@ -48,6 +48,7 @@ export default class CheckVersion {
     if (!process.env.JWT_SECRET) {
       warnings.push(`env.JWT_SECRET: ${chalk.white.bgRed.bold("Secret JWT isn't defined")}`)
     }
+
     if (!process.env.MONGO_DB) {
       warnings.push(`env.MONGO_DB: ${chalk.white.bgRed.bold("Database connect isn't defined")}`)
     }

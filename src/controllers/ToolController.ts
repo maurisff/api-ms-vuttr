@@ -14,7 +14,7 @@ export default class ToolControllers {
     try {
       const { title, link, description, tags } = tool
       const data: ITool = await this.repository.create({ title, link, description, tags })
-      return data
+      return await this.repository.get(data.id)
     } catch (error) {
       throw new AppError(error.message)
     }
