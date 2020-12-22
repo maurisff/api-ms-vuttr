@@ -1,3 +1,7 @@
+import 'reflect-metadata'
+import { config } from 'dotenv'
+import CheckVersion from '@config/CheckVersion'
+import Database from '@config/Database'
 import express, { Application, NextFunction, Request, Response } from 'express'
 import { Server } from 'http'
 import morgan from 'morgan'
@@ -13,18 +17,29 @@ import { readFileSync } from 'fs'
 import path from 'path'
 
 import { useExpressServer } from 'routing-controllers'
+import { Connection } from 'mongoose'
+import AppError from '@utils/AppError'
 
 export default class App {
   private app: Application;
   private server: Server;
   private port: Number;
+  private database: Database;
 
   constructor () {
-    this.app = express()
-    this.middlewares()
-    this.swaggerDocs()
-    this.routes()
-    this.listen()
+    process.env.NODE_ENV = process.env.NODE_ENV.trim()
+    config({ path: process.env.NODE_ENV === 'production' ? '.env.production' : process.env.NODE_ENV === 'test' ? '.env.test' : '.env' })
+    this.checkEnvironment()
+  }
+
+  private checkEnvironment (): void {
+    const checkVersion: CheckVersion = new CheckVersion()
+    checkVersion.execute()
+  }
+
+  private async initDB (): Promise<void> {
+    this.database = new Database()
+    await this.database.connect()
   }
 
   private middlewares (): void {
@@ -71,18 +86,32 @@ export default class App {
     })
   }
 
-  private async listen (): Promise<void> {
+  public async initialize (): Promise<void> {
+    await this.initDB()
+    this.app = express()
+    this.middlewares()
+    this.swaggerDocs()
+    this.routes()
+  }
+
+  public async listen (): Promise<void> {
     this.port = Number((process.env.PORT || process.env.API_PORT || 3000))
-    this.server = this.app.listen(this.port, () => {
+    this.server = this.getApplication().listen(this.port, () => {
       Logger.info('Server started on port: ', this.port)
     })
   }
 
   public getApplication (): Application {
+    if (!this.app) { throw new AppError('Application not initialized!', 500) }
     return this.app
   }
 
   public getServer (): Server {
+    if (!this.server) { throw new AppError('Server is not listening', 500) }
     return this.server
+  }
+
+  public getDBConn (): Connection {
+    return this.database.connection()
   }
 }

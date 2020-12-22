@@ -13,6 +13,10 @@ export default class UserRepository {
     return await new this.Model(data).save()
   }
 
+  async get (id: string): Promise<ITool> {
+    return await this.Model.findById(id).select('-__v')
+  }
+
   async find (filter: FilterQuery<ITool>): Promise<ITool[]> {
     return await this.Model.find(filter).select('-__v')
   }
