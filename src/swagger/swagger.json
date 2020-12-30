@@ -16,6 +16,10 @@
     {
       "url": "https://api-ms-vuttr.herokuapp.com/api/v1/",
       "description": "Heroku server v1"
+    },
+    {
+      "url": "https://api-ms-vuttr.mschueroff.com.br/api/v1/",
+      "description": "Private VPS with Docker v1"
     }
   ],
   "tags": [

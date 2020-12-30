@@ -21,13 +21,13 @@ import { Connection } from 'mongoose'
 import AppError from '@utils/AppError'
 
 export default class App {
+  private port: Number;
   private app: Application;
   private server: Server;
-  private port: Number;
   private database: Database;
 
   constructor () {
-    process.env.NODE_ENV = process.env.NODE_ENV.trim()
+    process.env.NODE_ENV = String(process.env.NODE_ENV).trim()
     config({ path: process.env.NODE_ENV === 'production' ? '.env.production' : process.env.NODE_ENV === 'test' ? '.env.test' : '.env' })
     this.checkEnvironment()
   }

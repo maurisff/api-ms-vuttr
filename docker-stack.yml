@@ -1,0 +1,49 @@
+version: '3.7'
+services:
+  mongodb:
+    image: mongo
+    volumes:
+      - mongo-vuttr-configdb:/data/configdb
+      - mongo-vuttr-db:/data/db
+    networks:
+      - vuttr-net
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+
+  api-ms-vuttr:
+    image: mauriciosff/api-ms-vuttr
+    depends_on:
+      - mongodb
+    env_file:
+      - .stack.env
+    networks:
+      - proxy-public
+      - vuttr-net
+    deploy:
+      mode: replicated
+      replicas: 2
+      update_config:
+        parallelism: 2
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+      labels:
+        - "traefik.enable=true"
+        - "traefik.docker.network=proxy-public"
+        - "traefik.http.routers.vuttr.rule=Host(`api-ms-vuttr.mschueroff.com.br`)"
+        - "traefik.http.routers.vuttr.service=vuttr"
+        - "traefik.http.routers.vuttr.tls.certresolver=proxy-resolver"
+        - "traefik.http.routers.vuttr.entrypoints=web,websecure"
+        - "traefik.http.services.vuttr.loadbalancer.server.port=3000"
+
+networks:
+  proxy-public:
+      external: true
+  vuttr-net:
+      driver: overlay
+      attachable: true
+
+volumes:
+  mongo-vuttr-configdb:
+  mongo-vuttr-db:
