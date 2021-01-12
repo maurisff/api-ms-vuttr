@@ -1,0 +1,34 @@
+name: TestCovaregeCI
+on:
+  push:
+    branch:
+      - 'main'
+        
+jobs:
+  Build:
+    name: Test Production
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dump env
+        run: env | sort
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
+      #- uses: actions/checkout@v2
+      #- name: Get Node_Modules cache directory
+      #  id: npm-cache
+      #  run: |
+      #    echo "::set-output name=dir::$(npm config get cache)"
+      #- uses: actions/cache@v2
+      #  with:
+      #    path: ${{ steps.npm-cache.outputs.dir }}
+      #    key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+      #    restore-keys: |
+      #      ${{ runner.os }}-node-
+      #- name: upgrade npm
+      #  run: npm install -g npm
+      #- name: Install dependencies
+      #  run: npm install
+      #- name: Run test pre build
+      #  run: npm run test:coverage

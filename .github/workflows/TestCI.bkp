@@ -1,0 +1,47 @@
+# This is a basic workflow to help you get started with Actions
+
+name: TestCI
+
+# Controls when the action will run. 
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+    push:
+      branch:
+        - 'develop'
+        - 'main'
+        - 'hotfix/*'
+        - 'support/*'
+        
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  Build:
+    # The type of runner that the job will run on
+    name: Test Production
+    runs-on: ubuntu-latest
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - name: Dump env
+        run: env | sort
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      #- uses: actions/checkout@v2
+      #- name: Get Node_Modules cache directory
+      #  id: npm-cache
+      #  run: |
+      #    echo "::set-output name=dir::$(npm config get cache)"
+      #- uses: actions/cache@v2
+      #  with:
+      #    path: ${{ steps.npm-cache.outputs.dir }}
+      #    key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+      #    restore-keys: |
+      #      ${{ runner.os }}-node-
+      #- name: upgrade npm
+      #  run: npm install -g npm
+      #- name: Install dependencies
+      #  run: npm install
+      #- name: Run test
+      #  run: npm run test

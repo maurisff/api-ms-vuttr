@@ -1,0 +1,13 @@
+name: Debug
+on: [push, pull_request, page_build, release]        
+jobs:
+  debug:
+    name: debug
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dump env
+        run: env | sort
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
