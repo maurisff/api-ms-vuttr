@@ -62,7 +62,8 @@ export default class CheckVersion {
         console.log(`  ${warning}`)
       }
       console.log()
-      process.exit(1)
+      throw new Error('Error Initialization...')
+      // process.exit(1)
     }
   }
 }

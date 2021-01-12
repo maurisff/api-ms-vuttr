@@ -35,4 +35,8 @@ jobs:
       - name: Install dependencies
         run: npm install
       - name: Run test
+        env:
+          NODE_ENV: test
+          JWT_SECRET: test
+          MONGO_DB: ${{ secrets.MONGO_DB_TEST }}
         run: npm run test
