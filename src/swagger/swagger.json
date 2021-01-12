@@ -1,0 +1,507 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "VUTTR (Very Useful Tools to Remember)",
+    "description": "Back-end da aplicação VUTTR",
+    "contact": {
+      "email": "mauricio.sff@gmail.com"
+    },
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000/api/v1/",
+      "description": "Localhost server v1"
+    },
+    {
+      "url": "https://api-ms-vuttr.herokuapp.com/api/v1/",
+      "description": "Heroku server v1"
+    },
+    {
+      "url": "https://api-ms-vuttr.mschueroff.com.br/api/v1/",
+      "description": "Private VPS with Docker v1"
+    }
+  ],
+  "tags": [
+    {
+      "name": "session",
+      "description": "Accesso ao EndPoint de Login"
+    },
+    {
+      "name": "user",
+      "description": "Acesso ao EndPoint de usuários"
+    },
+    {
+      "name": "tools",
+      "description": "Acesso ao EndPoint de Ferramentas"
+    }
+  ],
+  "paths": {
+    "/session/authentication": {
+      "post": {
+        "tags": [
+          "session"
+        ],
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ],
+        "summary": "cria um novo token jwt",
+        "operationId": "authentication",
+        "responses": {
+          "200": {
+            "description": "Login realizado com sucesso",
+            "headers": {
+              "authorization": {
+                "description": "Token JWT valido para requisções",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserSession"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid login/password",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Criar novo usuário",
+        "description": "EndPoint para cadastros de novos usuarios",
+        "operationId": "createUser",
+        "requestBody": {
+          "description": "Payload com os dados do novo usuarios",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/newUser"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Status de Usuário criado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid login/password",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Status de usuário não autenticado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Consultar usuários cadastrados",
+        "description": "EndPoint para consulta de usuários cadastrados",
+        "operationId": "getUser",
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "description": "Texto opcional usado para filtrar os usuarios",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Status de consulta realizada com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Users"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Status de erro na consulta!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Status de usuário não autenticado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Tools": {
+      "post": {
+        "tags": [
+          "tools"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Adicionar uma nova ferramenta",
+        "operationId": "creatTools",
+        "requestBody": {
+          "description": "Payload com os dados da nova Ferramenta",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/newTool"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Status de Ferramenta criada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Tool"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Status de dados inválidos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Status de usuário não autenticado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "tools"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Consultar ferramentas cadastradas",
+        "operationId": "getTools",
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "description": "Texto opcional usado para filtrar as ferramentas",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "tag",
+            "in": "query",
+            "description": "Parâmetro opcional usado para filtrar as ferramentas apenas pelas tags",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Status de consulta realizada com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Tools"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Status de erro na consulta!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Status de usuário não autenticado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Tools/{id}": {
+      "delete": {
+        "tags": [
+          "tools"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Excluir ferramenta cadastrada",
+        "operationId": "deleteTool",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID da ferramenta cadastrada",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Status de ferramenta excluida com sucesso",
+            "content": {}
+          },
+          "400": {
+            "description": "Status de erro na operação!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Status de usuário não autenticado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "UserSession": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "login": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "token": {
+            "type": "string"
+          }
+        }
+      },
+      "newUser": {
+        "required": [
+          "login",
+          "password",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "login": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string"
+          },
+          "login": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "Users": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/User"
+        }
+      },
+      "Tag": {
+        "type": "string"
+      },
+      "newTool": {
+        "required": [
+          "title",
+          "link",
+          "description"
+        ],
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "link": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Tag"
+            }
+          }
+        }
+      },
+      "Tool": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "link": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Tag"
+            }
+          }
+        }
+      },
+      "Tools": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Tool"
+        }
+      },
+      "ApiResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "BasicAuth": {
+        "type": "http",
+        "scheme": "basic"
+      },
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}

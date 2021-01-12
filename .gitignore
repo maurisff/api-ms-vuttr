@@ -1,0 +1,27 @@
+node_modules
+dist
+logs
+coverage
+.settings
+
+
+# local env files
+.env
+.env.*
+.stack.env
+*.error
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Editor directories and files
+.idea
+.project
+.classpath
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?

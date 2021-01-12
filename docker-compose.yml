@@ -1,0 +1,24 @@
+version: "3"
+services:
+  mongodb-vuttr:
+    image: mongo
+    volumes:
+      - mongo-vuttr-configdb:/data/configdb
+      - mongo-vuttr-db:/data/db
+    ports:
+      - "27017:27017"
+
+  api-ms-vuttr:
+    image: mauriciosff/api-ms-vuttr
+    depends_on:
+      - mongodb-vuttr
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - JWT_SECRET=1234567890
+      - MONGO_DB=mongodb://mongodb-vuttr:27017/db-ms-vuttr
+
+volumes:
+  mongo-vuttr-configdb:
+  mongo-vuttr-db:
