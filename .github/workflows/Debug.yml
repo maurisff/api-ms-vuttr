@@ -1,5 +1,6 @@
 name: Debug
-on: [push, pull_request, page_build, release]        
+on: [push, pull_request, page_build, release]      
+  
 jobs:
   debug:
     name: debug
