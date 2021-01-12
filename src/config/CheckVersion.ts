@@ -62,8 +62,10 @@ export default class CheckVersion {
         console.log(`  ${warning}`)
       }
       console.log()
-      throw new Error('Error Initialization...')
-      // process.exit(1)
+      if (process.env.NODE_ENV === 'test') {
+        throw new Error('Error Initialization for Test Mode!!!')
+      }
+      process.exit(1)
     }
   }
 }
