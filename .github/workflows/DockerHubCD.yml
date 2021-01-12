@@ -32,7 +32,11 @@ jobs:
             ${{ runner.os }}-node-
       - name: Install dependencies
         run: npm install
-      - name: Run test pre build
+      - name: Run test pre Build Image
+        env:
+          NODE_ENV: test
+          JWT_SECRET: test
+          MONGO_DB: ${{ secrets.MONGO_DB_TEST }}
         run: npm run test
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
