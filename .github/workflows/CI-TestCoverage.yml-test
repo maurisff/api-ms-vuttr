@@ -1,4 +1,4 @@
-name: TestCovaregeCI
+name: CI Test with coverage
 on:
   push:
     branches:
